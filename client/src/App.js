@@ -60,7 +60,8 @@ class App extends Component {
         {this.state.isLogged && <div>
           <button className="App-button red" onClick={this.handleOnClickLogout}>Logout</button>
         </div>}
-        <Route path="/login" render={() => <UserLogin onClickLogin={this.handleSubmitLogin}/>} />
+        <Route path="/login" render={() => <UserLogin isLogin={true} onClickLogin={this.handleSubmitLogin}/>} />
+        <Route path="/register" render={() => <UserLogin isLogin={false} onClickLogin={this.handleSubmitLogin}/>} />
         <Route path="/jokes" component={JokesList} />
       </div>
     );

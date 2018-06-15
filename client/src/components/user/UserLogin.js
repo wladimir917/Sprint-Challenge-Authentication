@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import axios from 'axios';
 import './User.css'
@@ -9,8 +10,19 @@ class UserLogin extends Component {
     this.state = {
       username: '',
       password: '',
+      isLogin: true
       
     }
+  }
+
+  componentDidMount() {
+    console.log(this.props.isLogin)
+    this.setState({isLogin: this.props.isLogin});
+  }
+
+  handleCancel = (e) => {
+    if(e.target.id === 'container')
+      this.props.history.push('/');
   }
 
   handleChange = (e) => {
@@ -31,31 +43,61 @@ class UserLogin extends Component {
   };
 
   handleRegister = () => {
-    this.setState({username: '', password: ''});
+    axios
+      .post('http://localhost:5000/api/users', this.state)
+      .then(response => {
+        localStorage.setItem('jwt', response.data.token);
+        localStorage.setItem('msg', response.data.message);
+        this.props.onClickLogin( response.data.message )
+      })
+      .catch(err => {
+        this.setState({username: '', password: ''});
+      });
+  };
+  ifIsLogin = () => {
+    const title = (
+      <div className="User-title">
+        {this.state.isLogin ? 'User Login' : 'Not Register Yet?'}
+      </div>
+    );
+    const inputs = (
+      <div>
+        <div className="User-input">
+          <input name='username' type="text" onChange={this.handleChange} value={this.state.username} placeholder="Username" />
+        </div>
+        <div className="User-input">
+          <input name='password' type="password" onChange={this.handleChange} value={this.state.password} placeholder="Password"/>
+        </div>
+      </div>
+    );
+
+    if(this.state.isLogin)
+      return (
+        <div>
+          {title}
+          {inputs}
+          <button className="App-button" onClick={this.handleLogin}>Login</button>
+        </div>
+      )
+    else
+      return (
+        <div>
+          {title}
+          {inputs}
+          <button className="App-button blue" onClick={this.handleRegister}>Register</button>
+        </div>
+      )
   }
 
   render() { 
     return (
-      <div className="User-container"> 
+      <div id="container" className="User-container" onClick={this.handleCancel}> 
         <div className="User">
-          <div className="User-title">
-            User Login
-          </div>
-          <div className="User-input">
-            <input name='username' type="text" onChange={this.handleChange} value={this.state.username} placeholder="Username" />
-          </div>
-          <div className="User-input">
-          <input name='password' type="password" onChange={this.handleChange} value={this.state.password} placeholder="Password"/>
-          </div>
-          <button className="App-button" onClick={this.handleLogin}>Login</button>
-          <div className="User-title">
-            Not Register Yet?          
-          </div>
-          <button className="App-button blue" onClick={this.handleRegister}>Register</button>
+        {this.ifIsLogin()}
         </div>
       </div>
      )
   }
 }
  
-export default UserLogin;
+export default withRouter(UserLogin);
