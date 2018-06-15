@@ -47,11 +47,11 @@ class UserLogin extends Component {
           <div className="User-input">
           <input name='password' type="password" onChange={this.handleChange} value={this.state.password} placeholder="Password"/>
           </div>
-          <button className="User-button" onClick={this.handleLogin}>Login</button>
+          <button className="App-button" onClick={this.handleLogin}>Login</button>
           <div className="User-title">
             Not Register Yet?          
           </div>
-          <button className="User-button" onClick={this.handleRegister}>Register</button>
+          <button className="App-button blue" onClick={this.handleRegister}>Register</button>
         </div>
       </div>
      )
