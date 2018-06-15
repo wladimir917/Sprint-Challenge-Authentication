@@ -33,7 +33,6 @@ class Users extends React.Component {
       .get('http://localhost:5000/api/jokes', requestOptions)
       .then(response => {
         this.setState({ jokes: response.data });
-        console.log(response.data);
       })
       .catch(err => {
         console.error(err);

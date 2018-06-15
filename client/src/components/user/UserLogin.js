@@ -11,12 +11,10 @@ class UserLogin extends Component {
       username: '',
       password: '',
       isLogin: true
-      
     }
   }
 
   componentDidMount() {
-    console.log(this.props.isLogin)
     this.setState({isLogin: this.props.isLogin});
   }
 
