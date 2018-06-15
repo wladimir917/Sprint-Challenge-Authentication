@@ -13,10 +13,12 @@ const login = (req, res) => {
       res.status(422).json({ error: 'No user with that username in our DB' });
       return;
     }
-    user.checkPassword(password, (nonMatch, hashMatch) => {
+    console.log(password)
+    user.checkPassword(password, (error, hashMatch) => {
+      console.log(error, hashMatch)
       // This is an example of using our User.method from our model.
-      if (nonMatch !== null) {
-        res.status(422).json({ error: 'passwords dont match' });
+      if (!hashMatch) {
+        res.status(422).json({ error: "passwords don't match" });
         return;
       }
       if (hashMatch) {
